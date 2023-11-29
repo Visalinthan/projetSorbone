@@ -1,5 +1,6 @@
 package fr.sorbonne.paris.nord.university.api.controller;
 
+
 import fr.sorbonne.paris.nord.university.api.entity.TeamEntity;
 import fr.sorbonne.paris.nord.university.api.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,6 @@ public class TeamController {
 	 public void deleteTeam(@PathVariable Long id){
 		this.teamService.deleteTeam(id);
 	 }
+
 
 }
