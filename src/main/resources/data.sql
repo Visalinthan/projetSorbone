@@ -5,3 +5,4 @@ INSERT INTO team (name, slogan) VALUES ('Bayern', 'Les puissants en
 Allemagne');
 INSERT INTO team (name, slogan) VALUES ('Manchester United', 'Les red
 devils');
+
