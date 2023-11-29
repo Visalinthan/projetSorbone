@@ -1,6 +1,5 @@
 package fr.sorbonne.paris.nord.university.api.service;
 
-
 import fr.sorbonne.paris.nord.university.api.entity.TeamEntity;
 import fr.sorbonne.paris.nord.university.api.repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,28 +9,25 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class TeamService  {
+public class TeamService {
 
-    @Autowired
-    private TeamRepository teamRepository;
+	@Autowired
+	private TeamRepository teamRepository;
 
-    public TeamService() {
-        this.teamRepository= teamRepository;
-    }
+	public List<TeamEntity> getAllTeam() {
+		return this.teamRepository.findAll();
+	}
 
-    public List<TeamEntity> getAllTeam(){
-        return this.teamRepository.findAll();
-    }
+	public Optional<TeamEntity> getTeamById(Long id) {
+		return this.teamRepository.findById(id);
+	}
 
-    public Optional<TeamEntity> getTeamById(Long id){
-        return this.teamRepository.findById(id);
-    }
+	public void saveTeam(TeamEntity team) {
+		this.teamRepository.save(team);
+	}
 
-    public void saveTeam(TeamEntity team){
-          this.teamRepository.save(team);
-    }
+	public void deleteTeam(Long id) {
+		this.teamRepository.deleteById(id);
+	}
 
-    public void deleteTeam(Long id){
-        this.teamRepository.deleteById(id);
-    }
 }

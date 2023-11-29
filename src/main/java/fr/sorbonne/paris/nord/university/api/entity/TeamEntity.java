@@ -1,23 +1,21 @@
 package fr.sorbonne.paris.nord.university.api.entity;
-import javax.persistence.*;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "team")
 public class TeamEntity {
-    @Id
-    @GeneratedValue
+	@Id    
+	@GeneratedValue(strategy=GenerationType.AUTO)   
     private Long id;
+	
     private String name;
+    
     private String slogan;
-
-    public TeamEntity() {
-    }
-
-    public TeamEntity(Long id, String name, String slogan) {
-        this.id = id;
-        this.name = name;
-        this.slogan = slogan;
-    }
 
     public Long getId() {
         return id;
