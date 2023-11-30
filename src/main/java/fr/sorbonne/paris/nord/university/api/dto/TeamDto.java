@@ -7,6 +7,13 @@ public class TeamDto {
     private  String  name ;
     private  String slogan ;
 
+
+    public TeamDto()  {}
+    public TeamDto(String name, String slogan) {
+        this.name= name;
+        this.slogan= slogan;
+    }
+
     public String getName() {
         return name;
     }

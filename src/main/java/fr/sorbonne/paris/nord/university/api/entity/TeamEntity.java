@@ -15,6 +15,15 @@ public class TeamEntity {
    private  String  name ;
    private  String slogan ;
 
+   public TeamEntity ()  {
+
+   }
+
+   public TeamEntity(String name, String slogan) {
+      this.name= name;
+      this.slogan=slogan;
+   }
+
    public String getName() {
       return name;
    }
