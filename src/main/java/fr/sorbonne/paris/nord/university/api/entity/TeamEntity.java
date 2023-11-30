@@ -14,8 +14,7 @@ public class TeamEntity {
     public TeamEntity() {
     }
 
-    public TeamEntity(Long id, String name, String slogan) {
-        this.id = id;
+    public TeamEntity(String name, String slogan) {
         this.name = name;
         this.slogan = slogan;
     }
