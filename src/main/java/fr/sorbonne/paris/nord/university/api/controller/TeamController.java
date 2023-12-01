@@ -29,7 +29,7 @@ public class TeamController {
 	@Autowired
 	private TeamMapper teamMapper;
 
-	@GetMapping("/allteams")
+	@GetMapping("/teams")
 	 public ResponseEntity<List<TeamDto>> getAllTeams() {
 		List<TeamDto> teamDto = this.teamService.getAllTeam()
 				.stream()
@@ -39,7 +39,7 @@ public class TeamController {
 		return new ResponseEntity<>(teamDto, HttpStatus.OK);
 	 }
 
-	 @GetMapping("/team/{id}")
+	 @GetMapping("/teams/{id}")
 	public ResponseEntity<TeamDto> getTeamById(@PathVariable Long id){
 		TeamDto teamDto = this.teamService.getTeamById(id)
 				.stream()
@@ -49,14 +49,14 @@ public class TeamController {
 		 return new ResponseEntity<>(teamDto, HttpStatus.OK);
 	 }
 
-	 @PostMapping("/team")
+	@PostMapping("/teams/add")
 	 public ResponseEntity<TeamDto> newTeam(@RequestBody TeamDto teamDto){
-		TeamEntity teamEntity = teamMapper.toTeamEntity(teamDto);
+		 TeamEntity teamEntity = teamMapper.toTeamEntity(teamDto);
 		 this.teamService.saveTeam(teamEntity);
-		 return new ResponseEntity<>(teamDto, HttpStatus.CREATED);
+		 return new ResponseEntity<TeamDto>(teamDto, HttpStatus.CREATED);
 	 }
 
-	 @DeleteMapping("/team/{id}")
+	 @DeleteMapping("/teams/delete/{id}")
 	 public ResponseEntity<String> deleteTeam(@PathVariable Long id){
 		this.teamService.deleteTeam(id);
 

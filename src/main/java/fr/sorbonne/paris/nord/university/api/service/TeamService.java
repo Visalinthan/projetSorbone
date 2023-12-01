@@ -27,8 +27,8 @@ public class TeamService  {
         return this.teamRepository.findById(id);
     }
 
-    public void saveTeam(TeamEntity team){
-          this.teamRepository.save(team);
+    public TeamEntity saveTeam(TeamEntity team){
+          return this.teamRepository.save(team);
     }
 
     public void deleteTeam(Long id){

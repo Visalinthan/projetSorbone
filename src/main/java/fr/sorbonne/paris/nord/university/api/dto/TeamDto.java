@@ -10,6 +10,10 @@ public class TeamDto {
         this.slogan = slogan;
     }
 
+    public TeamDto() {
+
+    }
+
     public String getName() {
         return name;
     }
