@@ -39,6 +39,7 @@ public class TeamMapper {
 
     //Transformer  DTO  en  Modèle
     public TeamEntity toTeamEntity(TeamDto teamDto) {
+
         return new TeamEntity(teamDto.getName(), teamDto.getSlogan());
     }
 

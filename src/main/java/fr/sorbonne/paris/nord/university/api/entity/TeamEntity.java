@@ -9,7 +9,7 @@ import javax.persistence.*;
 public class TeamEntity {
 
    @Id
-   @GeneratedValue
+   @GeneratedValue(strategy=GenerationType.IDENTITY)
    private Long id ;
 
    private  String  name ;

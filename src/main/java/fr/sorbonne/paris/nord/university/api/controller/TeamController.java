@@ -2,9 +2,11 @@ package fr.sorbonne.paris.nord.university.api.controller;
 
 import fr.sorbonne.paris.nord.university.api.dto.TeamDto;
 import fr.sorbonne.paris.nord.university.api.entity.TeamEntity;
+import fr.sorbonne.paris.nord.university.api.exception.TeamInvalidException;
 import fr.sorbonne.paris.nord.university.api.mapper.TeamMapper;
 import fr.sorbonne.paris.nord.university.api.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +16,7 @@ import java.util.Optional;
 import static java.util.stream.Collectors.toList;
 
 @RestController
-@RequestMapping("/WebServiceTeams")
+@RequestMapping("/api")
 public class TeamController {
 
 	@Autowired
@@ -26,17 +28,16 @@ public class TeamController {
 		this.teamService = teamService;
 	}
 
-	@GetMapping("/hello")
+	/*@GetMapping("/hello")
 	 public String getTeams() {
 	 return "Hello World";
-	 }
+	 }*/
 
 
 
 	//Récuperer la liste des équipes
-	@GetMapping("/ListEquipes")
-
-	public ResponseEntity<List<TeamDto>> getAllTeams() {
+	@GetMapping("/teams")
+    public ResponseEntity<List<TeamDto>> getAllTeams() {
 
 		//User user = userService.getUser(id);
 		List<TeamDto> teamDto = teamService.getAllEquipes()
@@ -82,30 +83,46 @@ public class TeamController {
 	}
 
 	//Crée une équipe
-	@PostMapping("/teams")
-	public  TeamDto  saveTeam(@RequestBody  TeamDto teamDto)  {
+	//@PostMapping("/addteams")
+	@RequestMapping(value ="/teams/add", method = RequestMethod.POST)
+	public  ResponseEntity<TeamEntity>  saveTeam(@RequestBody  TeamDto teamDto)  {
+
+		if(teamDto.getName().isEmpty() || teamDto.getSlogan().isEmpty()) {
+			throw new TeamInvalidException("Le champ 'slogan' ou 'name' ne peut pas etre null ou vide");
+
+		}  else {
 
 		TeamEntity teamEntity1 = mapper.toTeamEntity(teamDto);
 
 		 this.teamService.saveTeam(teamEntity1);
 
-         /*return  this.teamService.getEquipeById(teamEntity1.getId()).
-				 stream()
-				 .map(mapper::toDto)
-				 .findFirst().get();*/
+		return  new ResponseEntity<>(teamEntity1, HttpStatus.CREATED);}
 
-		return mapper.TeamIdDTO(teamEntity1.getId());
 	}
 
 	 //Supprimer une équipe existante
-	@DeleteMapping ("/teams/{id}")
-	public  String    deleteTeams(@PathVariable Long id) {
-		    this.teamService.deleteEquipe(id);
-			return "L'equipe avec id = " +id +  "a été supprimé " ;
+	@DeleteMapping ("/teams/delete/{id}")
+	public  ResponseEntity<String>    deleteTeams(@PathVariable Long id) {
+
+		if(teamService.getEquipeById(id).isPresent()) {
+
+			String response = "L'equipe avec id = " + id + "a été supprimé ";
+
+			this.teamService.deleteEquipe(id);
+
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		}  else  {
+			throw new TeamInvalidException("L'équipe introuvable avec l'ID :" +id);
+		}
+
+
 	}
 
 
+    //Pour envoyer messages  d'exception
+	@ExceptionHandler(TeamInvalidException.class)
+    public ResponseEntity<String> handleTeamInvalideException(TeamInvalidException e){
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+	}
 
-
-
-}
+}//Fin classe Controleur

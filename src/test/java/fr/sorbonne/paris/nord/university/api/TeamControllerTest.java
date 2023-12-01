@@ -1,13 +1,18 @@
 package fr.sorbonne.paris.nord.university.api;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 import fr.sorbonne.paris.nord.university.api.controller.TeamController;
 import fr.sorbonne.paris.nord.university.api.entity.TeamEntity;
 import fr.sorbonne.paris.nord.university.api.service.TeamService;
+//import io.restassured.mapper.ObjectMapper;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +22,15 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.lang.reflect.Array;
 
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
@@ -83,6 +93,86 @@ public class TeamControllerTest {
             //System.out.println(mockMvc.perform(get("/WebServiceTeams/teams/{id}")));
             //.andExpect(jsonPath("$.slogan").value("john@example.com"));
         }
+
+    private static TeamEntity getEquipe(){
+
+        TeamEntity teamEntity = new TeamEntity();
+
+         teamEntity.setId(8L);
+         teamEntity.setName("PSG New");
+         teamEntity.setSlogan("ok le meuilleur");
+
+        return teamEntity;
+    }
+
+
+    @Test
+    void addEquipe() throws Exception {
+        ObjectMapper obj = new ObjectMapper();
+        ObjectNode node = obj.createObjectNode();
+        node.set("name", TextNode.valueOf("Test"));
+        node.set("slogan", TextNode.valueOf("ga ga"));
+
+
+        String jsonNotes = node.toString();
+
+        TeamEntity note = getEquipe();
+
+        when(teamService.saveTeam((TeamEntity) any())).thenReturn(note);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/api/teams/add")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonNotes))
+                .andExpect(status().isOk());
+
+    }
+
+    @Test
+    void addEquipeTestException() throws Exception {
+
+
+
+        TeamEntity note = getEquipe();
+
+        when(teamService.saveTeam((TeamEntity) any())).thenReturn(note);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/api/teams/add")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(""))
+                .andExpect(status().isBadRequest());
+
+    }
+
+
+
+    @Test
+    void testDelete()   throws Exception{
+        /*TeamEntity teamEntity = new TeamEntity();
+        TeamService serviceMock = Mockito.mock(TeamService.class);
+        //teamEntity.setServiceDependency(serviceMock);
+
+        // Configurer le mock pour la méthode delete avec un argument donné
+        //Mockito.when(serviceMock.deleteEquipe(Long.valueOf(Mockito.anyString()))).thenReturn(true);
+        Mockito.when(serviceMock.deleteEquipe(Mockito.anyLong())).thenReturn(true);
+
+        // Appeler la méthode à tester
+        boolean result = myClass.delete("someId");
+
+        // Effectuer des assertions sur le résultat
+        Assertions.assertTrue(result);
+
+        // Vérifier que la méthode delete du mock a été appelée avec le bon argument
+        Mockito.verify(serviceMock).delete("someId");*/
+        //TeamEntity notes = getEquipe();
+
+        doNothing().when(teamService).deleteEquipe(Mockito.anyLong());
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/teams/delete/{id}",1)
+        ).andExpect(status().isOk());
+
+    }
+
 
         /*
 
@@ -250,7 +340,9 @@ class ConsultationControllerTest {
 */
 
 
-    }
+
+
+    } //Fin de classe
 
 
 
