@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import fr.sorbonne.paris.nord.university.api.controller.TeamController;
-import fr.sorbonne.paris.nord.university.api.dto.TeamDto;
 import fr.sorbonne.paris.nord.university.api.entity.TeamEntity;
 import fr.sorbonne.paris.nord.university.api.service.TeamService;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
@@ -18,8 +17,6 @@ import org.springframework.http.MediaType;
 
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import java.time.LocalDate;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doNothing;
@@ -97,5 +94,20 @@ public class TeamControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/teams/delete/{id}",1)
         ).andExpect(status().isOk());
+    }
+
+    @Test
+    void addTeamTestException() throws Exception {
+
+        TeamEntity team = getTeam();
+
+        when(teamService.saveTeam((TeamEntity) any())).thenReturn(team);
+
+        mockMvc.perform(
+                        post("/api/teams/add")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                                .content(""))
+                .andExpect(status().isBadRequest());
     }
 }
