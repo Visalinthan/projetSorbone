@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
-
+@CrossOrigin (origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api")
 public class TeamController {
@@ -106,11 +106,12 @@ public class TeamController {
 
 		if(teamService.getEquipeById(id).isPresent()) {
 
-			String response = "L'equipe avec id = " + id + "a été supprimé ";
+			String response = "Equipe avec id:  " + id + "a été supprimé ";
 
 			this.teamService.deleteEquipe(id);
-
-			return new ResponseEntity<>(response, HttpStatus.OK);
+            //CEtte solution à faire pour le Retour sur FrontEnd
+			//return new ResponseEntity<>(response, HttpStatus.OK);
+			return ResponseEntity.noContent().build();
 		}  else  {
 			throw new TeamInvalidException("L'équipe introuvable avec l'ID :" +id);
 		}

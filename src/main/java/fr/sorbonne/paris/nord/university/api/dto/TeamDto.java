@@ -3,15 +3,25 @@ package fr.sorbonne.paris.nord.university.api.dto;
 public class TeamDto {
 
 
-
+    private Long  id ;
     private  String  name ;
     private  String slogan ;
 
 
+
     public TeamDto()  {}
-    public TeamDto(String name, String slogan) {
+    public TeamDto(Long id,String name, String slogan) {
+        this.id=id;
         this.name= name;
         this.slogan= slogan;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

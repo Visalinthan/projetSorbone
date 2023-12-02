@@ -15,6 +15,8 @@ public class TeamMapper {
 
     //transformer  Modèle en DTO
     public TeamDto toDto(TeamEntity teamEntity) {
+        //cette ligne a ajouter pour que delete de frontend marche
+        Long id     = teamEntity.getId();
         String name = teamEntity.getName();
         String slogan =teamEntity.getSlogan();
 
@@ -24,7 +26,7 @@ public class TeamMapper {
                 .map(Role::getName)
                 .collect(toList());*/
 
-        return new TeamDto(name, slogan);
+        return new TeamDto(id,name, slogan);
     }
 
     public  TeamDto   TeamIdDTO(Long id) {
