@@ -8,10 +8,11 @@ import org.springframework.stereotype.Component;
 public class TeamMapper {
 
     public TeamDto toDto(TeamEntity teamEntity) {
+        Long id = teamEntity.getId();
         String name = teamEntity.getName();
         String slogan = teamEntity.getSlogan();
 
-        return new TeamDto(name, slogan);
+        return new TeamDto(id,name, slogan);
     }
 
     public TeamEntity toTeamEntity(TeamDto teamDto) {

@@ -16,6 +16,8 @@ import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
+
+@CrossOrigin(origins = "http://localhost:4200/")
 @RestController
 @RequestMapping("/api")
 public class TeamController {
@@ -75,14 +77,14 @@ public class TeamController {
 	 }
 
 	 @DeleteMapping("/teams/delete/{id}")
-	 public ResponseEntity<String> deleteTeam(@PathVariable Long id){
+	 public ResponseEntity<?> deleteTeam(@PathVariable Long id){
 
 		 if (teamService.getTeamById(id).isPresent()) {
 
 			 this.teamService.deleteTeam(id);
-			 String response = "L'équipe avec id "+id+ " a été supprimé";
+			 String response = "Equipe avec id "+id+ " a été supprimé";
 
-			 return new ResponseEntity<>(response, HttpStatus.OK);
+			 return ResponseEntity.noContent().build();
 		 } else {
 			 throw new TeamInvalidException("Équipe introuvable avec l'ID : " + id);
 		 }
